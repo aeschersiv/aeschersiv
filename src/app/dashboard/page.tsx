@@ -11,6 +11,12 @@ import WealthChart from "@/components/WealthChart";
 import SpendingBreakdown from "@/components/SpendingBreakdown";
 import InsurancePanel from "@/components/InsurancePanel";
 import InvestmentPanel from "@/components/InvestmentPanel";
+import DebtPayoffStrategy from "@/components/DebtPayoffStrategy";
+import RetirementReadiness from "@/components/RetirementReadiness";
+import EmergencyFundTracker from "@/components/EmergencyFundTracker";
+import IncomeBreakdown from "@/components/IncomeBreakdown";
+import GoalsTracker from "@/components/GoalsTracker";
+import ActionItems from "@/components/ActionItems";
 import {
   calculateLivingBalanceSheet,
   calculateFutureTimeline,
@@ -271,10 +277,33 @@ export default function DashboardPage() {
             </div>
           </div>
 
+          {/* Income, Emergency Fund, Goals */}
+          <div className="mb-8">
+            <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+              <div className="w-1.5 h-6 rounded-full bg-gradient-to-b from-emerald to-sky" />
+              Cash Flow & Goals
+            </h2>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <div className="lg:col-span-2">
+                <IncomeBreakdown data={data} />
+              </div>
+              <div className="space-y-6">
+                <EmergencyFundTracker data={data} />
+                <GoalsTracker data={data} />
+              </div>
+            </div>
+          </div>
+
           {/* Spending, Insurance, Investments */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
             <SpendingBreakdown data={data} />
             <InsurancePanel gap={insuranceGap} data={data} />
+          </div>
+
+          {/* Debt + Retirement */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <DebtPayoffStrategy data={data} />
+            <RetirementReadiness data={data} />
           </div>
 
           <div className="mb-8">
@@ -288,6 +317,15 @@ export default function DashboardPage() {
                 (Number(data["savings.brokerageBalance"]) || 0)
               }
             />
+          </div>
+
+          {/* Action Items */}
+          <div className="mb-8">
+            <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+              <div className="w-1.5 h-6 rounded-full bg-gradient-to-b from-gold to-rose" />
+              Your Action Plan
+            </h2>
+            <ActionItems data={data} insuranceGap={insuranceGap} />
           </div>
 
           {/* Dream life section */}
