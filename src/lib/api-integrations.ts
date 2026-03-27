@@ -1,6 +1,11 @@
 // ============================================================
 // API Integration Layer
-// Backn9ne Insurance + Altruist Portfolio Management
+// BackNine Insurance (back9ins.com) — Quote & Apply widget + BOSS platform
+// Altruist (altruist.com) — RIA custodial platform with Open & Realtime APIs
+//   Docs: https://developer.altruist.com
+//   Auth: OAuth 2.0
+//   Sandbox: https://openapi.stage1.altruistnet.tech/altruist-open-api/
+//   Production: https://openapi.altruist.com/altruist-open-api/
 // ============================================================
 
 import {
@@ -100,7 +105,7 @@ export class BackN9neClient {
 
 const ALTRUIST_DEFAULT_CONFIG: AltruistConfig = {
   apiKey: process.env.ALTRUIST_API_KEY || "",
-  baseUrl: process.env.ALTRUIST_API_URL || "https://api.altruist.com/v1",
+  baseUrl: process.env.ALTRUIST_API_URL || "https://openapi.altruist.com/altruist-open-api",
   advisorId: process.env.ALTRUIST_ADVISOR_ID || "",
 };
 
