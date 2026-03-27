@@ -1,0 +1,85 @@
+@import "tailwindcss";
+
+@theme {
+  --color-midnight: #0a0e1a;
+  --color-deep: #111827;
+  --color-surface: #1e2538;
+  --color-surface-light: #2a3347;
+  --color-accent: #6366f1;
+  --color-accent-light: #818cf8;
+  --color-gold: #f59e0b;
+  --color-gold-light: #fbbf24;
+  --color-emerald: #10b981;
+  --color-emerald-light: #34d399;
+  --color-rose: #f43f5e;
+  --color-sky: #0ea5e9;
+  --color-lavender: #a78bfa;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-midnight);
+  color: #e2e8f0;
+}
+
+::selection {
+  background-color: var(--color-accent);
+  color: white;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(99, 102, 241, 0.6);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.8s ease-out forwards;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, var(--color-accent-light), var(--color-gold-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.glass {
+  background: rgba(30, 37, 56, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(99, 102, 241, 0.15);
+}
+
+.narrative-section {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.narrative-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
