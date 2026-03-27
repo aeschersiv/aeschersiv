@@ -17,6 +17,8 @@ import EmergencyFundTracker from "@/components/EmergencyFundTracker";
 import IncomeBreakdown from "@/components/IncomeBreakdown";
 import GoalsTracker from "@/components/GoalsTracker";
 import ActionItems from "@/components/ActionItems";
+import FinancialHealthScore from "@/components/FinancialHealthScore";
+import NetWorthWaterfall from "@/components/NetWorthWaterfall";
 import {
   calculateLivingBalanceSheet,
   calculateFutureTimeline,
@@ -229,17 +231,20 @@ export default function DashboardPage() {
             />
           </div>
 
-          {/* Main grid */}
+          {/* Financial Health Score + Wealth Chart */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-            {/* Wealth projection chart — spans 2 cols */}
+            <div>
+              <FinancialHealthScore data={data} />
+            </div>
             <div className="lg:col-span-2">
               <WealthChart timeline={timeline} />
             </div>
+          </div>
 
-            {/* Happiness radar */}
-            <div>
-              <HappinessRadar data={happinessData} />
-            </div>
+          {/* Net Worth Waterfall + Happiness */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <NetWorthWaterfall data={data} />
+            <HappinessRadar data={happinessData} />
           </div>
 
           {/* Living Balance Sheet */}
