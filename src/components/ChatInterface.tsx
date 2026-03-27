@@ -32,8 +32,15 @@ export default function ChatInterface({ onComplete }: Props) {
   const [progress, setProgress] = useState(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const initializedRef = useRef(false);
+  const assessmentDataRef = useRef<Record<string, unknown>>({});
+  const currentNodeIdRef = useRef<string>("welcome");
 
   const totalNodes = Object.keys(assessmentTree).length;
+
+  // Keep refs in sync with state
+  assessmentDataRef.current = assessmentData;
+  currentNodeIdRef.current = currentNodeId;
 
   const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -54,7 +61,11 @@ export default function ChatInterface({ onComplete }: Props) {
         inputConfig: node.inputConfig,
         category: node.category,
       };
-      setMessages((prev) => [...prev, msg]);
+      setMessages((prev) => {
+        // Prevent duplicate messages
+        if (prev.some((m) => m.id === msg.id)) return prev;
+        return [...prev, msg];
+      });
       if (node.inputType === "slider") {
         setSliderValue(node.inputConfig?.min === 0 ? 0 : (node.inputConfig?.min || 1));
       }
@@ -62,10 +73,12 @@ export default function ChatInterface({ onComplete }: Props) {
   }, []);
 
   useEffect(() => {
+    // Guard against React strict mode double-firing
+    if (initializedRef.current) return;
+    initializedRef.current = true;
     const node = getNode("welcome");
     if (node) addAssistantMessage(node, {});
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [addAssistantMessage]);
 
   useEffect(() => {
     scrollToBottom();
@@ -73,7 +86,10 @@ export default function ChatInterface({ onComplete }: Props) {
 
   const handleAnswer = useCallback(
     (value: unknown, displayValue?: string) => {
-      const node = getNode(currentNodeId);
+      // Use refs to get current values (avoids stale closures)
+      const nodeId = currentNodeIdRef.current;
+      const data = assessmentDataRef.current;
+      const node = getNode(nodeId);
       if (!node) return;
 
       // Add user message
@@ -90,8 +106,9 @@ export default function ChatInterface({ onComplete }: Props) {
       });
 
       // Store data
-      const newData = { ...assessmentData, [node.storeAs]: value };
+      const newData = { ...data, [node.storeAs]: value };
       setAssessmentData(newData);
+      assessmentDataRef.current = newData;
 
       // Calculate progress
       const answeredCount = Object.keys(newData).length;
@@ -105,6 +122,7 @@ export default function ChatInterface({ onComplete }: Props) {
       }
 
       setCurrentNodeId(nextId);
+      currentNodeIdRef.current = nextId;
       const nextNode = getNode(nextId);
       if (nextNode) {
         addAssistantMessage(nextNode, newData);
@@ -114,7 +132,7 @@ export default function ChatInterface({ onComplete }: Props) {
       setTextInput("");
       setSelectedOptions([]);
     },
-    [currentNodeId, assessmentData, totalNodes, onComplete, addAssistantMessage]
+    [totalNodes, onComplete, addAssistantMessage]
   );
 
   const handleTextSubmit = () => {
