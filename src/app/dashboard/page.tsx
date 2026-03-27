@@ -20,6 +20,8 @@ import ActionItems from "@/components/ActionItems";
 import FinancialHealthScore from "@/components/FinancialHealthScore";
 import NetWorthWaterfall from "@/components/NetWorthWaterfall";
 import IntertemporalCalculator from "@/components/IntertemporalCalculator";
+import TaxOptimization from "@/components/TaxOptimization";
+import ValuesAlignment from "@/components/ValuesAlignment";
 import {
   calculateLivingBalanceSheet,
   calculateFutureTimeline,
@@ -323,6 +325,12 @@ export default function DashboardPage() {
                 (Number(data["savings.brokerageBalance"]) || 0)
               }
             />
+          </div>
+
+          {/* Tax + Values */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <TaxOptimization data={data} />
+            <ValuesAlignment data={data} />
           </div>
 
           {/* Intertemporal Calculator */}
