@@ -19,6 +19,7 @@ import GoalsTracker from "@/components/GoalsTracker";
 import ActionItems from "@/components/ActionItems";
 import FinancialHealthScore from "@/components/FinancialHealthScore";
 import NetWorthWaterfall from "@/components/NetWorthWaterfall";
+import IntertemporalCalculator from "@/components/IntertemporalCalculator";
 import {
   calculateLivingBalanceSheet,
   calculateFutureTimeline,
@@ -322,6 +323,15 @@ export default function DashboardPage() {
                 (Number(data["savings.brokerageBalance"]) || 0)
               }
             />
+          </div>
+
+          {/* Intertemporal Calculator */}
+          <div className="mb-8">
+            <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+              <div className="w-1.5 h-6 rounded-full bg-gradient-to-b from-lavender to-accent" />
+              Today vs. Tomorrow
+            </h2>
+            <IntertemporalCalculator data={data} />
           </div>
 
           {/* Action Items */}
